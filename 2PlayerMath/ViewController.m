@@ -26,6 +26,7 @@
 @property (nonatomic, strong)NSArray *players;
 @property (nonatomic, strong)Player *player1;
 @property (nonatomic, strong)Player *player2;
+@property (weak, nonatomic) IBOutlet UILabel *resultLabel;
 
 
 @end
@@ -104,14 +105,8 @@
     [self.userAnswer appendString:@"9"];
     self.userAnswerLabel.text = self.userAnswer;
 }
-
-- (IBAction)code9:(id)sender {
-    [self.userAnswer appendString:@"0"];
-    self.userAnswerLabel.text = self.userAnswer;
-}
-
 - (IBAction)push0:(id)sender {
-    [self.userAnswer appendString:@"1"];
+    [self.userAnswer appendString:@"0"];
     self.userAnswerLabel.text = self.userAnswer;
 }
 
@@ -119,16 +114,28 @@
     int userAnswerNumber = [self.userAnswer intValue];
     if (userAnswerNumber == [self.gameModel calculateAnswer]){
         [self.currentPlayer increaseScore];
-//        self.userAnswerLabel.text = @"Correct!";
-//        self.userAnswerLabel.textColor = [UIColor greenColor];
-//        [UIView animateWithDuration:1.0 delay:1.0 options: UIViewAnimationOptionTransitionNone animations:^{
-//            self.userAnswerLabel.textColor = [[UIColor greenColor]colorWithAlphaComponent:1.0f];
-//        } completion:nil];
         
+        self.resultLabel.text = @"Correct!";
+        self.resultLabel.textColor = [UIColor greenColor];
+        [UIView animateWithDuration:1.0 animations:^(void){
+            self.resultLabel.alpha = 1;
+            self.resultLabel.alpha = 0;
+        }];
+//        WHY CAN'T I OVERWRITE THE userAnswerLabel TO DISPLAY THE CORRECT?????
+        //        self.userAnswerLabel.textColor = [UIColor greenColor];
+        //        [UIView animateWithDuration:1.0 delay:1.0 options: UIViewAnimationOptionTransitionNone animations:^{
+        //            self.userAnswerLabel.textColor = [[UIColor greenColor]colorWithAlphaComponent:1.0f];
+        //        } completion:nil];
         
     }
     else{
         [self.currentPlayer decreaseLives];
+        self.resultLabel.text = @"Incorrect!";
+        self.resultLabel.textColor = [UIColor redColor];
+        [UIView animateWithDuration:1.0 animations:^(void){
+            self.resultLabel.alpha = 1;
+            self.resultLabel.alpha = 0;
+        }];
     }
     
     if (self.currentPlayer.lives == 0) {
